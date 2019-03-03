@@ -17,6 +17,13 @@
   transform: translate(-50%, -50%);
 }
 
+@mixin truncate {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 // Custom for this project
 @mixin content-center-screen-width {
   margin: 0 auto;
