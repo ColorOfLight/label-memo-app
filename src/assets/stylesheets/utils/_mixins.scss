@@ -1,0 +1,29 @@
+@mixin content-center-horizontal {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@mixin content-center-vertical {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@mixin content-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// Custom for this project
+@mixin content-center-screen-width {
+  margin: 0 auto;
+  max-width: $screen-max-width;
+
+  @media screen and (min-width: $screen-max-width + 1) {
+    border-left: 1px solid $border-color;
+    border-right: 1px solid $border-color;
+  }
+}
