@@ -27,6 +27,7 @@ export default new Vuex.Store({
     },
     selectedLabel: 'l1',
     selectedMemo: null,
+    uid: '',
   },
   getters: {
     selectedMemos: state => {
@@ -36,7 +37,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    
+    setUid: (state, pl) => {
+      state.uid = pl;
+    }
   },
   actions: {
 
