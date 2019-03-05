@@ -9,14 +9,14 @@ export default new Vuex.Store({
       l1: {
         name: '라벨 1',
         memos: [
-          'm1', 'm2'
+          'm1'
         ]
       },
     },
     memos: {
       m1: {
         title: '메모 1',
-        labels: [ 'l1' ],
+        labels: [ ],
         content: "테스트!"
       },
       m2: {
@@ -25,8 +25,15 @@ export default new Vuex.Store({
         content: "테스트 2!!"
       }
     },
-    selectedLabel: null,
+    selectedLabel: 'l1',
     selectedMemo: null,
+  },
+  getters: {
+    selectedMemos: state => {
+      const sL = state.selectedLabel;
+      const memoList = state.labels[sL] && state.labels[sL].memos;
+      return memoList.map(item => state.memos[item]);
+    },
   },
   mutations: {
     
