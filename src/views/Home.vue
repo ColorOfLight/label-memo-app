@@ -1,16 +1,6 @@
 <template lang="pug">
   .page-home
-    .label-list
-      .label-list-wrapper
-        .label-list-title 라벨 리스트
-        .label-list-item-container
-          .label-list-item
-            | 전체 보기
-            span.number (42)
-          .label-list-item.selected
-            | 라벨 1
-            span.number (4)
-        a.btn-bottom-sqaure.btn-label-edit 라벨 편집하기
+    label-list
     .memo-list
       .memo-list-wrapper
         .memo-list-item-container
@@ -38,67 +28,18 @@
 </template>
 
 <script>
-export default {
+import LabelList from "@/components/LabelList";
 
+export default {
+  components: {
+    'label-list': LabelList,
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .page-home {
   height: 100vh;
-  position: relative;
-  width: 100%;
-}
-
-.label-list {
-  background-color: $primary;
-  box-shadow: $list-box-shadow;
-  color: $white;
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: $label-list-width;
-  z-index: $z-label-list;
-
-  .label-list-title {
-    padding: 1rem 1.5rem 0;
-  }
-
-  .label-list-item-container {
-    margin-top: .5rem;
-  }
-
-  .label-list-item {
-    font-size: 2rem;
-    font-weight: 800;
-    padding: .375rem 1.5rem;
-
-    .number {
-      font-size: 1.125rem;
-      font-weight: 600;
-      margin-left: .375rem;
-      vertical-align: middle;
-    }
-
-    &.selected {
-      background-color: $white;
-      border-bottom-right-radius: .5rem;
-      border-top-right-radius: .5rem;
-      color: $primary;
-    }
-  }
-
-  .btn-label-edit {
-    bottom: 1.5rem;
-    left: 1.5rem;
-    position: absolute;
-    right: 1.5rem;
-  }
-}
-
-.label-list-wrapper {
-  height: 100%;
   position: relative;
   width: 100%;
 }
