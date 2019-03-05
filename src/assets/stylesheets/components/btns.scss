@@ -1,4 +1,4 @@
-.btn-bottom-sqaure {
+.btn-bottom-square {
   background-color: $white;
   box-shadow: $btn-box-shadow;
   color: $primary;
@@ -11,5 +11,13 @@
   &:hover {
     background-color: $primary-bg;
     cursor: pointer;
+  }
+
+  &.warning {
+    color: $secondary;
+
+    &:hover {
+      background-color: $secondary-bg;
+    }
   }
 }

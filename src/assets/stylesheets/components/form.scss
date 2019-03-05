@@ -1,0 +1,24 @@
+.checkbox-wrapper {
+  display: inline-block;
+}
+
+.checkbox-custom {
+  height: 2rem;
+  opacity: 0;
+  position: absolute;
+  width: 2rem;
+  z-index: $z-checkbox-input;
+
+  & + label:before {
+    content: "check_box_outline_blank";
+    font-size: 2rem;
+    font-family: "Material Icons";
+    font-weight: 400;
+    position: relative;
+    vertical-align: sub;
+  }
+
+  &:checked + label:before {
+    content: "check_box";
+  }
+}
