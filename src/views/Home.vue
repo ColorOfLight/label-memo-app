@@ -1,19 +1,7 @@
 <template lang="pug">
   .page-home
     label-list
-    .memo-list
-      .memo-list-wrapper
-        .memo-list-item-container
-          .memo-list-item
-            .memo-list-item-title 제목 1
-            .memo-list-item-content 본 프로그램은 라벨이 포함된 메모를 편집할 수 있는 프로그램입니다.
-          .memo-list-item.selected
-            .memo-list-item-title 제목 2
-            .memo-list-item-content 본 프로그램은 라벨이 포함된 메모를 편집할 수 있는 프로그램입니다.
-          .memo-list-item
-            .memo-list-item-title 제목 3
-            .memo-list-item-content 본 프로그램은 라벨이 포함된 메모를 편집할 수 있는 프로그램입니다.
-        a.btn-bottom-sqaure.btn-memo-list-edit 메모 편집하기
+    memo-list
     .memo-detail-container
       .memo-detail-title-card
         .memo-detail-title-title 제목 3
@@ -29,10 +17,12 @@
 
 <script>
 import LabelList from "@/components/LabelList";
+import MemoList from "@/components/MemoList";
 
 export default {
   components: {
     'label-list': LabelList,
+    'memo-list': MemoList,
   }
 }
 </script>
@@ -40,66 +30,6 @@ export default {
 <style lang="scss" scoped>
 .page-home {
   height: 100vh;
-  position: relative;
-  width: 100%;
-}
-
-.memo-list {
-  background-color: $white;
-  bottom: 0;
-  box-shadow: $list-box-shadow;
-  left: $label-list-width;
-  position: absolute;
-  top: 0;
-  width: $memo-list-width;
-  z-index: $z-memo-list;
-
-  .memo-list-item {
-    background-color: $white;
-    border-bottom: 1px solid $border-color;
-    padding: .75rem 1.5rem;
-
-    &.selected {
-      background-color: $primary-bg;
-
-      .memo-list-item-title {
-        color: $primary;
-      }
-
-      .memo-list-item-content {
-        color: $primary-dark;
-      }
-    }
-  }
-
-  .memo-list-item-title {
-    @include truncate;
-    font-size: 1.125rem;
-    font-weight: 600;
-  }
-
-  .memo-list-item-content {
-    @include truncate;
-    color: $gray;
-    margin-top: .5rem;
-  }
-
-  .btn-memo-list-edit {
-    background-color: $primary;
-    bottom: 1.5rem;
-    color: $white;
-    left: 1.5rem;
-    position: absolute;
-    right: 1.5rem;
-
-    &:hover {
-      background-color: darken($primary, 10%);
-    }
-  }
-}
-
-.memo-list-wrapper {
-  height: 100%;
   position: relative;
   width: 100%;
 }
