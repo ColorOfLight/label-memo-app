@@ -12,6 +12,15 @@
             label
           | {{label.name}}
           span.number ({{label.memos.length}})
+        .label-list-input-wrapper(v-if="isAddMode")
+            input.label-list-input(type="text" v-model="newLabelName" @keyup.enter="addNewLabel")
+            a.label-list-input-cancel(@click="resetAddMode")
+              i.material-icons close
+            .label-list-input-comment 입력 후 Enter 키를 눌러주세요
+      .label-btn-add-wrapper(v-if="!isAddMode")
+        a.btn.btn-label-add(@click="isAddMode = !isAddMode")
+          i.material-icons add
+          | 라벨 추가하기
       a.btn-bottom-square.btn-label-edit(v-if="!isEditMode" @click="toggleEditMode") 라벨 편집하기
       a.btn-bottom-square.btn-label-edit(v-else-if="isEditMode && !hasSelectedLabels" @click="toggleEditMode") 편집 완료하기
       a.btn-bottom-square.btn-label-edit.warning(v-else @click="removeSelectedLabels") 선택한 라벨 삭제하기
@@ -22,11 +31,16 @@ export default {
   data () {
     return {
       isEditMode: false,
+      isAddMode: false,
       selectedLabels: {},
-      labels: this.$store.state.labels
+      // labels: this.$store.state.labels,
+      newLabelName: '',
     }
   },
   computed: {
+    labels: function () {
+      return this.$store.state.labels;
+    },
     totalMemosLength: function () {
       return Object.keys(this.$store.state.memos).length;
     },
@@ -41,6 +55,14 @@ export default {
     removeSelectedLabels() {
       // TODO
     },
+    resetAddMode() {
+      this.newLabelName = "";
+      this.isAddMode = false;
+    },
+    addNewLabel() {
+      this.$store.dispatch("addNewLabel", this.newLabelName);
+      
+    }
   }
 }
 </script>
@@ -109,6 +131,68 @@ export default {
 
   .checkbox-wrapper {
     display: none;
+  }
+
+  .label-btn-add-wrapper {
+    margin-top: 3rem;
+    padding-right: 1.5rem;
+    text-align: right;
+  }
+
+  .btn-label-add {
+    background-color: $primary;
+    border: 1px solid $white;
+    border-radius: .5rem;
+    color: $white;
+    display: inline-block;
+    font-weight: 600;
+    height: 2.25rem;
+    line-height: 2.25rem;
+    padding: 0 1rem 0 .75rem;
+
+    &:hover {
+      border-color: $primary-bg;
+      color: $primary-bg;
+    }
+
+    .material-icons {
+      font-size: 1.25rem;
+      margin-right: .5rem;
+      vertical-align: sub;
+    }
+  }
+
+  .label-list-input-wrapper {
+    padding: 0.5rem 1.5rem;
+    padding-right: 3.5rem;
+    position: relative;
+  }
+
+  .label-list-input {
+    background-color: transparent;
+    border: 0;
+    border-bottom: 2px solid $white;
+    color: $white;
+    font-size: 2rem;
+    font-weight: 600;
+    width: 100%;
+  }
+
+  .label-list-input-cancel {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .label-list-input-comment {
+    font-size: 0.875rem;
+    font-weight: 400;
+    margin-top: .25rem;
+    text-align: right;
   }
 }
 

@@ -11,6 +11,8 @@ if (uid) {
   store.commit('setUid', uid);
 }
 
+store.dispatch('initData');
+
 new Vue({
   router,
   store,
