@@ -30,7 +30,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (!store.state.uid && to.name !== 'login') {
+  if (!store.state.uid && (to.name !== 'login' && to.name !== 'signup')) {
     next({name: 'login'});
   } else {
     next();
