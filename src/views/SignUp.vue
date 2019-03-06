@@ -1,6 +1,6 @@
 <template lang="pug">
-  .page-login
-    login-module(mode="login")
+  .page-signup
+    login-module(mode="signup")
 </template>
 
 <script>
@@ -16,7 +16,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page-login {
+.page-signup {
   background-color: $primary;
   height: 100vh;
   position: relative;
