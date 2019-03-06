@@ -3,10 +3,11 @@
     .label-list-wrapper
       .label-list-title 라벨 리스트
       .label-list-item-container
-        .label-list-item.total
+        .label-list-item.total(:class="{selected: !selectedLabel}" @click="setSelectedLabel('')")
           | 전체 보기
           span.number ({{totalMemosLength}})
-        .label-list-item(v-for="(label, key) in labels" key="Object.keys(labels)")
+        .label-list-item(v-for="(label, key) in labels" key="Object.keys(labels)"
+                          :class="{selected: selectedLabel === key}" @click="setSelectedLabel(key)")
           .checkbox-wrapper
             input.checkbox-custom(type="checkbox" v-model="selectedLabels[key]")
             label
@@ -41,6 +42,9 @@ export default {
     labels: function () {
       return this.$store.state.labels;
     },
+    selectedLabel: function() {
+      return this.$store.state.selectedLabel;
+    },
     totalMemosLength: function () {
       return Object.keys(this.$store.state.memos).length;
     },
@@ -61,7 +65,9 @@ export default {
     },
     addNewLabel() {
       this.$store.dispatch("addNewLabel", this.newLabelName);
-      
+    },
+    setSelectedLabel(key) {
+      this.$store.commit("setSelectedLabel", key);
     }
   }
 }
@@ -97,6 +103,10 @@ export default {
       font-weight: 600;
       margin-left: .375rem;
       vertical-align: middle;
+    }
+
+    &:hover {
+      cursor: pointer;
     }
 
     &.selected {
