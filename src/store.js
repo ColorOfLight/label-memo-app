@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import router from './router'
+import Cookies from 'js-cookie'
 
 import firebase from 'firebase'
 require("firebase/firestore");
@@ -34,8 +35,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    setUid: (state, pl) => {
-      state.uid = pl;
+    setUid: (state, uid) => {
+      state.uid = uid;
+      Cookies.set('uid', uid, {expires: 7});
     }
   },
   actions: {
