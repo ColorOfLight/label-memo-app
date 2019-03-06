@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     hasSelectedMemos: function () {
-      return Object.values(this.selectedMemosList).filter(item => item).length > 0;
+      return this.selectedMemosList && Object.values(this.selectedMemosList).filter(item => item).length > 0;
     },
   }
 }

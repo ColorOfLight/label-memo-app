@@ -26,26 +26,31 @@ export default new Vuex.Store({
     selectedLabel: '',
     selectedMemo: '',
     uid: '',
+    dbRef: null,
   },
   getters: {
     selectedMemos: state => {
       const sL = state.selectedLabel;
       const memoList = state.labels[sL] && state.labels[sL].memos;
-      return memoList.map(item => state.memos[item]);
+      return memoList && memoList.map(item => state.memos[item]);
     },
   },
   mutations: {
     setUid: (state, uid) => {
       state.uid = uid;
       Cookies.set('uid', uid, {expires: 7});
+    },
+    setLabels: (state, data) => {
+      state.labels = data;
     }
   },
   actions: {
     // TODO: error messages in signup & login
-    signUp: ({state, commit}, {email, password}) => {
+    signUp: ({state, commit, dispatch}, {email, password}) => {
       firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
           commit('setUid', firebase.auth().currentUser.uid);
           db.collection("users").add({ uid: state.uid });
+          dispatch('initData');
           router.push({
             name: 'home'
           });
@@ -57,6 +62,7 @@ export default new Vuex.Store({
     login: ({state, commit}, {email, password}) => {
       firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
         commit('setUid', firebase.auth().currentUser.uid);
+        dispatch('initData');
         router.push({ name: 'home' });
       }).catch((err) => {
         console.log(err);
@@ -64,16 +70,28 @@ export default new Vuex.Store({
       });
     },
     initData: ({state, commit}) => {
-      db.collection("labels").doc(state.uid).get().then((ss) => {
-        if (doc.exists) {
-          state.labels = ss.data;
-        }
+      if (!state.uid) return;
+
+      state.dbRef = db.collection("users").doc(state.uid);
+
+      state.dbRef.collection("labels").onSnapshot((res) => {
+        let newLabels = {}
+        res.forEach(item => {newLabels[item.id] = item.data()})
+        commit('setLabels', newLabels);
       });
-      db.collection("memos").doc(state.uid).get().then((ss) => {
-        if (doc.exists) {
-          state.memos = ss.data;
-        }
+      state.dbRef.collection("memos").onSnapshot((res) => {
+        state.memos = res.docs.map(item => item.data());
       });
+    },
+    addNewLabel: ({state, commit}, newLabel) => {
+      if (newLabel) {
+        const newObj = {
+          name: newLabel,
+          timestamp: (new Date).getTime(),
+          memos: [],
+        }
+        state.dbRef.collection("labels").add(newObj);
+      }
     },
   }
 })
