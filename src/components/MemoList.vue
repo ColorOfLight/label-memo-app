@@ -8,7 +8,8 @@
           br
           | 새 메모를 추가해보세요!
       .memo-list-item-container(v-else)
-        .memo-list-item(v-for="(memo, key) in memos" key="Object.keys(memos)")
+        .memo-list-item(v-for="(memo, key) in memos" key="Object.keys(memos)"
+                          :class="{selected: selectedMemo === key}" @click="setSelectedMemo(key)")
           .checkbox-wrapper
             input.checkbox-custom(type="checkbox" v-model="selectedMemosList[key]")
             label
@@ -25,16 +26,24 @@ export default {
   data () {
     return {
       isEditMode: false,
-      memos: this.$store.getters.selectedMemos,
       selectedMemosList: {},
     }
   },
   methods: {
     toggleEditMode() {
       this.isEditMode = !this.isEditMode;
-    }
+    },
+    setSelectedMemo(key) {
+      this.$store.commit('setSelectedMemo', key);
+    },
   },
   computed: {
+    memos: function () {
+      return this.$store.state.memos;
+    },
+    selectedMemo: function () {
+      return this.$store.state.selectedMemo;
+    },
     hasSelectedMemos: function () {
       return this.selectedMemosList && Object.values(this.selectedMemosList).filter(item => item).length > 0;
     },
@@ -58,6 +67,10 @@ export default {
     border-bottom: 1px solid $border-color;
     padding: .75rem 1.5rem;
     position: relative;
+
+    &:hover {
+      cursor: pointer;
+    }
 
     &.selected {
       background-color: $primary-bg;
