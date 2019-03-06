@@ -10,14 +10,15 @@
         .login-input-label 비밀번호
         input.login-input(type="password")
       .login-btn-wrapper
-        a.btn.btn-finish 회원 가입
+        a.btn.btn-finish(v-if="mode === 'signup'") 회원 가입
+        a.btn.btn-finish(v-else) 로그인
       .login-comment(v-if="mode === 'signup'")
         | 이미 가입한 회원이시면 
-        router-link(to="{name: 'login'}").link-accent 로그인
+        router-link(to="/login").link-accent 로그인
         |  하세요!
       .login-comment(v-else)
         | 처음 사용하시는 분들은 
-        router-link(to="{name: 'signup'}").link-accent 회원가입
+        router-link(to="/signup").link-accent 회원가입
         | 하세요!
 </template>
 
