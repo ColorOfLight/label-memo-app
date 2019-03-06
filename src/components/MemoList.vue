@@ -1,7 +1,13 @@
 <template lang="pug">
   .memo-list(:class="{edit: isEditMode}")
     .memo-list-wrapper
-      .memo-list-item-container
+      .memo-list-empty(v-if="!memos")
+        .text 해당 라벨의 메모가 하나도 없습니다.
+        .text 
+          | 오른쪽 아래 버튼을 눌러
+          br
+          | 새 메모를 추가해보세요!
+      .memo-list-item-container(v-else)
         .memo-list-item(v-for="(memo, key) in memos" key="Object.keys(memos)")
           .checkbox-wrapper
             input.checkbox-custom(type="checkbox" v-model="selectedMemosList[key]")
@@ -117,6 +123,22 @@ export default {
 
     &:checked + label:before {
       color: $secondary;
+    }
+  }
+
+  .memo-list-empty {
+    padding: 3.5rem 1.5rem 0;
+    width: 100%;
+
+    .text {
+      color: $gray-dark;
+      font-size: 1.125rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .text + .text {
+      margin-top: 1rem;
     }
   }
 }
