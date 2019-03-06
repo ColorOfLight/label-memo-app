@@ -1,22 +1,22 @@
 <template lang="pug">
   .memo-detail-container(:class="{edit: isEditMode}")
     .memo-detail-title-card
-      .memo-detail-title-title 제목 3
-      input.memo-detail-title-input(value="제목 3")
-      .memo-detail-title-labels 라벨 1, 라벨 2
-      .memo-detail-edit-container
+      .memo-detail-title-title  
+      input.memo-detail-title-input(v-model="title")
+      .memo-detail-title-labels 라벨 없음
+      .memo-detail-edit-container(v-if="selectedMemo")
         a.memo-detail-edit-btn(@click="toggleEditMode") 편집하기
         .memo-detail-editing 편집 중
-    .memo-detail-content-container
-      |본 프로그램은 라벨이 포함된 메모를 편집할 수 있습니다.
-      |내용을 편집하고 싶으시면 편집하기를 눌러 내용을 편집해주세요!
-    textarea.memo-detail-content-textarea
-      |본 프로그램은 라벨이 포함된 메모를 편집할 수 있습니다.
-      |내용을 편집하고 싶으시면 편집하기를 눌러 내용을 편집해주세요!
+    .memo-detail-content-container(v-if="!selectedMemo")
+      | 본 프로그램은 라벨이 포함된 메모를 편집할 수 있습니다.
+      br
+      br
+      | 오른쪽 아래 버튼을 눌러 새 메모를 추가해보세요!
+    textarea.memo-detail-content-textarea(v-model="content")
     .memo-detail-btn-wrapper
-      a.btn.memo-detail-finish-btn 편집 완료
+      a.btn.memo-detail-finish-btn(@click="uploadMemo") 편집 완료
 
-    a.btn-new-memo
+    a.btn-new-memo(@click="isEditMode = true")
       i.material-icons edit
 </template>
 
@@ -25,12 +25,30 @@ export default {
   data () {
     return {
       isEditMode: false,
+      content: '',
+      title: '',
     }
   },
   methods: {
     toggleEditMode () {
       this.isEditMode = !this.isEditMode;
     },
+    uploadMemo () {
+      this.$store.dispatch("uploadMemo", {
+        title: this.title,
+        content: this.content,
+        labels: [],
+        timestamp: (new Date).getTime(),
+      });
+      this.isEditMode = false;
+      this.content = '';
+      this.title = '';
+    }
+  },
+  computed: {
+    selectedMemo () {
+      return this.$store.state.selectedMemo;
+    }
   },
 }
 </script>
@@ -114,6 +132,11 @@ export default {
     position: absolute;
     right: 2.5rem;
     width: 4rem;
+
+    &:hover {
+      background-color: darken($primary, 10%);
+      cursor: pointer;
+    }
 
     .material-icons {
       font-size: 2rem;

@@ -43,6 +43,9 @@ export default new Vuex.Store({
     setLabels: (state, data) => {
       state.labels = data;
     },
+    setMemos: (state, data) => {
+      state.memos = data;
+    },
     setSelectedLabel: (state, key) => {
       state.selectedLabel = key;
     },
@@ -83,7 +86,11 @@ export default new Vuex.Store({
         commit('setLabels', newLabels);
       });
       state.dbRef.collection("memos").onSnapshot((res) => {
-        state.memos = res.docs.map(item => item.data());
+        let newMemos = {}
+        res.forEach(item => {
+          newMemos[item.id] = item.data()
+        })
+        commit('setMemos', newMemos);
       });
     },
     addNewLabel: ({state, commit}, newLabel) => {
@@ -94,6 +101,13 @@ export default new Vuex.Store({
           memos: [],
         }
         state.dbRef.collection("labels").add(newObj);
+      }
+    },
+    uploadMemo: ({state, commit}, newMemo) => {
+      if (state.selectedMemo) {
+        state.dbRef.collection("memos").update(state.selectedMemo).update(newMemo);
+      } else {
+        state.dbRef.collection("memos").add(newMemo);
       }
     },
   }
