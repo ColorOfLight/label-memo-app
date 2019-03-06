@@ -1,32 +1,29 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import router from './router'
+
+import firebase from 'firebase'
+require("firebase/firestore");
+
+var config = {
+  apiKey: "***REMOVED***",
+  authDomain: "label-memo-app.firebaseapp.com",
+  projectId: "label-memo-app",
+  databaseURL: "https://label-memo-app.firebaseio.com",
+  // storageBucket: "<BUCKET>.appspot.com",
+};
+firebase.initializeApp(config);
+
+const db = firebase.firestore();
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    labels: {
-      l1: {
-        name: '라벨 1',
-        memos: [
-          'm1'
-        ]
-      },
-    },
-    memos: {
-      m1: {
-        title: '메모 1',
-        labels: [ ],
-        content: "테스트!"
-      },
-      m2: {
-        title: '메모 2',
-        labels: [ 'l1' ],
-        content: "테스트 2!!"
-      }
-    },
-    selectedLabel: 'l1',
-    selectedMemo: null,
+    labels: {},
+    memos: {},
+    selectedLabel: '',
+    selectedMemo: '',
     uid: '',
   },
   getters: {
@@ -42,6 +39,39 @@ export default new Vuex.Store({
     }
   },
   actions: {
-
+    // TODO: error messages in signup & login
+    signUp: ({state, commit}, {email, password}) => {
+      firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
+          commit('setUid', firebase.auth().currentUser.uid);
+          db.collection("users").add({ uid: state.uid });
+          router.push({
+            name: 'home'
+          });
+        }).catch((err) => {
+          console.log(err);
+          alert("회원 가입 중 문제가 발생했습니다. 개발자에게 문의해주세요!");
+      });
+    },
+    login: ({state, commit}, {email, password}) => {
+      firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
+        commit('setUid', firebase.auth().currentUser.uid);
+        router.push({ name: 'home' });
+      }).catch((err) => {
+        console.log(err);
+        alert("로그인 중 문제가 발생했습니다. 개발자에게 문의해주세요!");
+      });
+    },
+    initData: ({state, commit}) => {
+      db.collection("labels").doc(state.uid).get().then((ss) => {
+        if (doc.exists) {
+          state.labels = ss.data;
+        }
+      });
+      db.collection("memos").doc(state.uid).get().then((ss) => {
+        if (doc.exists) {
+          state.memos = ss.data;
+        }
+      });
+    },
   }
 })

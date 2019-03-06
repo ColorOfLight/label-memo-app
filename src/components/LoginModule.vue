@@ -5,13 +5,13 @@
       .login-title(v-else) 메모 앱 로그인하기
       .login-input-wrapper
         .login-input-label 이메일
-        input.login-input(type="text")
+        input.login-input(type="text" v-model="email")
       .login-input-wrapper
         .login-input-label 비밀번호
-        input.login-input(type="password")
+        input.login-input(type="password" v-model="password")
       .login-btn-wrapper
-        a.btn.btn-finish(v-if="mode === 'signup'") 회원 가입
-        a.btn.btn-finish(v-else) 로그인
+        a.btn.btn-finish(v-if="mode === 'signup'" @click="doSignUp") 회원 가입
+        a.btn.btn-finish(v-else @click="doLogin") 로그인
       .login-comment(v-if="mode === 'signup'")
         | 이미 가입한 회원이시면 
         router-link(to="/login").link-accent 로그인
@@ -27,6 +27,22 @@ export default {
   props: [
     'mode',
   ],
+  data () {
+    return {
+      email: '',
+      password: '',
+    }
+  },
+  methods: {
+    doSignUp () {
+      this.$store.dispatch('signUp',
+        { email: this.email, password: this.password });
+    },
+    doLogin () {
+      this.$store.dispatch('login',
+      { email: this.email, password: this.password });
+    },
+  }
 }
 </script>
 
