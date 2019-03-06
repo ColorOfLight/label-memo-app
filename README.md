@@ -7,12 +7,29 @@
 [Live Demo](https://label-memo-app.firebaseapp.com/)
 
 ## 프로젝트 실행 방법
+1. `git clone https://github.com/ColorOfLight/label-memo-app.git`
+2. Set up your Firebase console
+3. Set active Auth via Email/Password & Firestore(Database)
+4. Create `config.json` at the root path with following form:
+
+```
+{
+  "apiKey": {YOUR_API_KEY},
+  "authDomain": {YOUR_AUTH_DOMAIN},
+  "projectId": {YOUR_PROJECT_ID}
+}
+```
+
+5. Install packages & Run dev server!
+
 ```
 # Project setup
 yarn install
 
 # Run dev server
 yarn run serve
+
+## Just for distribution!
 
 # Build for production
 yarn run build
@@ -83,6 +100,7 @@ SPA 서비스를 개발해야 되었기 때문에, Angular/React/Vue 중 하나�
 
 ## TODO
 - Show timestamp of memos
+- Add loading screen when loads data from firestore
 - Filter the memos with a label
 - Edit label name
 - Change the labels of the memos

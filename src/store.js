@@ -2,17 +2,11 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import router from './router'
 import Cookies from 'js-cookie'
+import config from '../config.json'
 
 import firebase from 'firebase'
 require("firebase/firestore");
 
-var config = {
-  apiKey: "***REMOVED***",
-  authDomain: "label-memo-app.firebaseapp.com",
-  projectId: "label-memo-app",
-  databaseURL: "https://label-memo-app.firebaseio.com",
-  // storageBucket: "<BUCKET>.appspot.com",
-};
 firebase.initializeApp(config);
 
 const db = firebase.firestore();
