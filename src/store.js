@@ -49,6 +49,9 @@ export default new Vuex.Store({
     setSelectedLabel: (state, key) => {
       state.selectedLabel = key;
     },
+    setSelectedMemo: (state, key) => {
+      state.selectedMemo = key;
+    },
   },
   actions: {
     // TODO: error messages in signup & login
@@ -105,7 +108,7 @@ export default new Vuex.Store({
     },
     uploadMemo: ({state, commit}, newMemo) => {
       if (state.selectedMemo) {
-        state.dbRef.collection("memos").update(state.selectedMemo).update(newMemo);
+        state.dbRef.collection("memos").doc(state.selectedMemo).update(newMemo);
       } else {
         state.dbRef.collection("memos").add(newMemo);
       }

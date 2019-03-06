@@ -1,7 +1,7 @@
 <template lang="pug">
   .memo-detail-container(:class="{edit: isEditMode}")
     .memo-detail-title-card
-      .memo-detail-title-title  
+      .memo-detail-title-title {{selectedMemo && selectedMemo.title}}
       input.memo-detail-title-input(v-model="title")
       .memo-detail-title-labels 라벨 없음
       .memo-detail-edit-container(v-if="selectedMemo")
@@ -12,6 +12,8 @@
       br
       br
       | 오른쪽 아래 버튼을 눌러 새 메모를 추가해보세요!
+    .memo-detail-content-container(v-else)
+      | {{selectedMemo && selectedMemo.content}}
     textarea.memo-detail-content-textarea(v-model="content")
     .memo-detail-btn-wrapper
       a.btn.memo-detail-finish-btn(@click="uploadMemo") 편집 완료
@@ -31,6 +33,10 @@ export default {
   },
   methods: {
     toggleEditMode () {
+      if (this.selectedMemo) {
+        this.title = this.selectedMemo.title;
+        this.content = this.selectedMemo.content;
+      }
       this.isEditMode = !this.isEditMode;
     },
     uploadMemo () {
@@ -47,7 +53,8 @@ export default {
   },
   computed: {
     selectedMemo () {
-      return this.$store.state.selectedMemo;
+      const key = this.$store.state.selectedMemo;
+      return key && this.$store.state.memos[key];
     }
   },
 }
