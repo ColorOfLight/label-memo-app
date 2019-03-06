@@ -42,7 +42,10 @@ export default new Vuex.Store({
     },
     setLabels: (state, data) => {
       state.labels = data;
-    }
+    },
+    setSelectedLabel: (state, key) => {
+      state.selectedLabel = key;
+    },
   },
   actions: {
     // TODO: error messages in signup & login
